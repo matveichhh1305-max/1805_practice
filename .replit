@@ -1,5 +1,5 @@
 run = "sh start.sh" 
-modules = ["python-3.11"]
+modules = ["python-3.11", "nodejs-20"]
 
 [env]
 PGDATA = "/home/runner/${REPL_SLUG}/data" 

@@ -161,6 +161,7 @@ def index():
 
     dev_domain = os.environ.get('REPLIT_DEV_DOMAIN', '')
     jupyter_url = "/jupyter/"
+    node_url = f"https://{dev_domain}:3000" if dev_domain else "http://localhost:3000"
 
     return f"""<!DOCTYPE html>
 <html lang="ru">
@@ -191,6 +192,8 @@ def index():
         .btn-active {{ background: white; color: #1a73e8; }}
         .btn-jupyter {{ background: #f57c00; color: white; }}
         .btn-jupyter:hover {{ background: #e65100; }}
+        .btn-node {{ background: #16a34a; color: white; }}
+        .btn-node:hover {{ background: #15803d; }}
         pre {{ background: white; padding: 20px; border-radius: 8px;
                white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }}
     </style>
@@ -200,6 +203,7 @@ def index():
         <span>PostgreSQL — поэтапный вывод данных</span>
         <a class="btn btn-active">Flask App</a>
         <a class="btn btn-jupyter" href="{jupyter_url}" target="_blank">Открыть Jupyter Notebook</a>
+        <a class="btn btn-node" href="{node_url}" target="_blank">Node Admin Panel</a>
     </div>
     <pre>{escape(page_text)}</pre>
 </body>

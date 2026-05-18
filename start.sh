@@ -37,6 +37,9 @@ jupyter notebook \
 # ── Flask on internal port 5001 ─────────────────────────────
 python main.py &
 
+# ── Node.js Admin on port 3000 ───────────────────────────────
+node app2/server.js >> logs/node.log 2>&1 &
+
 # ── nginx on port 5000 (only public port) ───────────────────
 sleep 3
 nginx -c "$PWD/nginx.conf" -g "daemon off;"
