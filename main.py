@@ -27,15 +27,14 @@ def index():
 
     # 2. Названия таблиц в базе данных
     cur.execute("""
-        SELECT table_name
-        FROM information_schema.tables
-        WHERE table_schema = 'public'
-        ORDER BY table_name;
+        SELECT schemaname, tablename
+        FROM pg_tables
+        ORDER BY schemaname, tablename;
     """)
     tables = cur.fetchall()
     sections.append({
-        "title": "2. Таблицы в базе данных",
-        "headers": ["table_name"],
+        "title": f"2. Таблицы в базе данных (всего: {len(tables)})",
+        "headers": ["schemaname", "tablename"],
         "rows": tables
     })
 
