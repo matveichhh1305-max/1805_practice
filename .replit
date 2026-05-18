@@ -1,4 +1,5 @@
 run = "sh start.sh"
+modules = ["python-3.11"]
 
 [env]
 PGDATA = "/home/runner/${REPL_SLUG}/data"
@@ -37,3 +38,6 @@ waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[nix]
+channel = "stable-25_05"

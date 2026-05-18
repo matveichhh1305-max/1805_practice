@@ -1,21 +1,24 @@
+#!/bin/bash
 # start Postgres
-pg_ctl stop
+pg_ctl stop -D "$PGDATA" 2>/dev/null || true
 
-if [ ! -d "data/base" ]; then
-  initdb
-  cp postgresql.conf.tpl data/postgresql.conf
-  
-  socker_dir="\/home\/runner\/${REPL_SLUG}\/postgres"
-  
-  sed -i "s/replace_unix_dir/${socker_dir}/" data/postgresql.conf
+if [ ! -d "$PGDATA/base" ]; then
+  initdb -D "$PGDATA"
+  cp postgresql.conf.tpl "$PGDATA/postgresql.conf"
+
+  socket_dir="$PWD/postgres"
+  mkdir -p "$socket_dir"
+  escaped_dir=$(echo "$socket_dir" | sed 's/\//\\\//g')
+  sed -i "s/replace_unix_dir/${escaped_dir}/" "$PGDATA/postgresql.conf"
 fi
 
-pg_ctl -l /home/runner/${REPL_SLUG}/postgresql.log start
+pg_ctl -D "$PGDATA" -l "$PWD/postgresql.log" start
 
 sleep 2
 
-if ! psql -h 127.0.0.1 -d appdb -c '\q' 2>/dev/null; then
-  psql -h 127.0.0.1 -d postgres -c "create database appdb;" 2>/dev/null || true
+DB_USER=$(whoami)
+if ! psql -h 127.0.0.1 -U "$DB_USER" -d appdb -c '\q' 2>/dev/null; then
+  psql -h 127.0.0.1 -U "$DB_USER" -d postgres -c "CREATE DATABASE appdb;" 2>/dev/null || true
 fi
 
 # start Flask app

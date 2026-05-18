@@ -38377,3 +38377,35 @@
 2026-05-11 11:53:04.840 GMT [99] LOG:  database system is ready to accept connections
 2026-05-11 11:53:06.914 GMT [134] FATAL:  role "postgres" does not exist
 2026-05-11 11:53:06.928 GMT [136] FATAL:  role "postgres" does not exist
+2026-05-18 09:24:13.177 GMT [8993] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-18 09:24:13.177 GMT [8993] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-18 09:24:13.181 GMT [8993] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-18 09:24:13.187 GMT [8996] LOG:  database system was shut down at 2026-05-18 09:24:12 GMT
+2026-05-18 09:24:13.193 GMT [8993] LOG:  database system is ready to accept connections
+2026-05-18 09:24:15.256 GMT [9004] FATAL:  role "postgres" does not exist
+2026-05-18 09:24:15.269 GMT [9006] FATAL:  role "postgres" does not exist
+2026-05-18 09:24:17.467 GMT [9113] FATAL:  database "appdb" does not exist
+2026-05-18 09:24:17.529 GMT [9115] FATAL:  database "appdb" does not exist
+2026-05-18 09:24:27.480 GMT [9215] FATAL:  database "appdb" does not exist
+2026-05-18 09:24:38.530 GMT [9232] FATAL:  role "postgres" does not exist
+2026-05-18 09:25:09.727 GMT [9397] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-18 09:25:09.728 GMT [9397] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-18 09:25:09.732 GMT [9397] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-18 09:25:09.737 GMT [9400] LOG:  database system was interrupted; last known up at 2026-05-18 09:24:13 GMT
+2026-05-18 09:25:09.757 GMT [9400] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-18 09:25:09.772 GMT [9400] LOG:  redo starts at 0/14ECD10
+2026-05-18 09:25:09.793 GMT [9400] LOG:  invalid record length at 0/1914F10: expected at least 24, got 0
+2026-05-18 09:25:09.793 GMT [9400] LOG:  redo done at 0/1914EC8 system usage: CPU: user: 0.00 s, system: 0.01 s, elapsed: 0.02 s
+2026-05-18 09:25:09.806 GMT [9398] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-18 09:25:10.245 GMT [9398] LOG:  checkpoint complete: wrote 925 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.039 s, sync=0.391 s, total=0.450 s; sync files=301, longest=0.003 s, average=0.002 s; distance=4256 kB, estimate=4256 kB; lsn=0/1914F10, redo lsn=0/1914F10
+2026-05-18 09:25:10.251 GMT [9397] LOG:  database system is ready to accept connections
+2026-05-18 09:25:12.736 GMT [9416] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-18 09:25:12.737 GMT [9416] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-18 09:25:12.740 GMT [9416] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-18 09:25:12.745 GMT [9419] LOG:  database system was interrupted; last known up at 2026-05-18 09:25:10 GMT
+2026-05-18 09:25:12.765 GMT [9419] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-18 09:25:12.776 GMT [9419] LOG:  invalid record length at 0/1914F88: expected at least 24, got 0
+2026-05-18 09:25:12.776 GMT [9419] LOG:  redo is not required
+2026-05-18 09:25:12.779 GMT [9417] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-18 09:25:12.791 GMT [9417] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.004 s, total=0.014 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1914F88, redo lsn=0/1914F88
+2026-05-18 09:25:12.796 GMT [9416] LOG:  database system is ready to accept connections

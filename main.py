@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     username = os.environ.get('USER', 'runner')
-    
+
     connection = psycopg2.connect(
         host="127.0.0.1",
         database="appdb",
