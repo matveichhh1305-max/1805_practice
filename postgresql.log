@@ -38464,3 +38464,16 @@
 2026-05-18 11:19:59.286 GMT [490] LOG:  checkpoint starting: end-of-recovery immediate wait
 2026-05-18 11:19:59.541 GMT [490] LOG:  checkpoint complete: wrote 60 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.219 s, total=0.257 s; sync files=42, longest=0.155 s, average=0.006 s; distance=180 kB, estimate=180 kB; lsn=0/1942338, redo lsn=0/1942338
 2026-05-18 11:19:59.546 GMT [489] LOG:  database system is ready to accept connections
+2026-05-18 11:24:59.641 GMT [490] LOG:  checkpoint starting: time
+2026-05-18 11:25:00.987 GMT [490] LOG:  checkpoint complete: wrote 14 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.304 s, sync=0.034 s, total=1.346 s; sync files=13, longest=0.015 s, average=0.003 s; distance=18 kB, estimate=164 kB; lsn=0/1946DE0, redo lsn=0/1946D88
+2026-05-18 11:25:21.796 GMT [1117] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-18 11:25:21.797 GMT [1117] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-18 11:25:21.801 GMT [1117] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-18 11:25:21.807 GMT [1120] LOG:  database system was interrupted; last known up at 2026-05-18 11:25:00 GMT
+2026-05-18 11:25:21.826 GMT [1120] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-18 11:25:21.840 GMT [1120] LOG:  redo starts at 0/1946D88
+2026-05-18 11:25:21.840 GMT [1120] LOG:  invalid record length at 0/1946E90: expected at least 24, got 0
+2026-05-18 11:25:21.840 GMT [1120] LOG:  redo done at 0/1946E58 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-05-18 11:25:21.844 GMT [1118] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-18 11:25:21.859 GMT [1118] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.005 s, total=0.017 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1946E90, redo lsn=0/1946E90
+2026-05-18 11:25:21.864 GMT [1117] LOG:  database system is ready to accept connections

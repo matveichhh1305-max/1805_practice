@@ -100,14 +100,15 @@ def index():
 
     # 6. starelid, stanullfrac из pg_statistic где stanullfrac между 0.2 и 0.8
     cur.execute("""
-        SELECT starelid, stanullfrac
-        FROM pg_statistic
-        WHERE stanullfrac BETWEEN 0.2 AND 0.8
-        ORDER BY starelid;
+        SELECT s.starelid, c.relname, s.stanullfrac
+        FROM pg_statistic s
+        JOIN pg_class c ON c.oid = s.starelid
+        WHERE s.stanullfrac BETWEEN 0.2 AND 0.8
+        ORDER BY s.starelid;
     """)
     sections.append({
-        "title": "6. pg_statistic: starelid и stanullfrac (от 0.2 до 0.8)",
-        "headers": ["starelid", "stanullfrac"],
+        "title": "6. pg_statistic: starelid, relname и stanullfrac (от 0.2 до 0.8)",
+        "headers": ["starelid", "relname", "stanullfrac"],
         "rows": cur.fetchall()
     })
 
