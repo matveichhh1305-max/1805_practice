@@ -160,7 +160,7 @@ def index():
     page_text = "\n".join(output)
 
     dev_domain = os.environ.get('REPLIT_DEV_DOMAIN', '')
-    jupyter_url = f"https://{dev_domain}:8080" if dev_domain else "http://localhost:8080"
+    jupyter_url = f"https://{dev_domain}:3000" if dev_domain else "http://localhost:3000"
 
     return f"""<!DOCTYPE html>
 <html lang="ru">
