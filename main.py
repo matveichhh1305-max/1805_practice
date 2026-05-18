@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from waitress import serve
 import psycopg2
 from psycopg2 import sql
@@ -159,19 +159,48 @@ def index():
 
     page_text = "\n".join(output)
 
+    dev_domain = os.environ.get('REPLIT_DEV_DOMAIN', '')
+    jupyter_url = f"https://{dev_domain}:8080" if dev_domain else "http://localhost:8080"
+
     return f"""<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>PostgreSQL — поэтапный вывод</title>
     <style>
-        body {{ font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }}
+        body {{ font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; margin: 0; }}
+        .navbar {{
+            background: #1a73e8;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: -20px -20px 24px -20px;
+        }}
+        .navbar span {{ color: white; font-weight: bold; font-size: 1rem; flex: 1; }}
+        .btn {{
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }}
+        .btn-active {{ background: white; color: #1a73e8; }}
+        .btn-jupyter {{ background: #f57c00; color: white; }}
+        .btn-jupyter:hover {{ background: #e65100; }}
         pre {{ background: white; padding: 20px; border-radius: 8px;
                white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }}
     </style>
 </head>
 <body>
-    <h1>PostgreSQL — поэтапный вывод данных</h1>
+    <div class="navbar">
+        <span>PostgreSQL — поэтапный вывод данных</span>
+        <a class="btn btn-active">Flask App</a>
+        <a class="btn btn-jupyter" href="{jupyter_url}" target="_blank">Открыть Jupyter Notebook</a>
+    </div>
     <pre>{escape(page_text)}</pre>
 </body>
 </html>"""
