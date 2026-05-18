@@ -1,0 +1,54 @@
+pg_ctl: another server might be running; trying to start server anyway
+waiting for server to start.... done
+server started
+[W 2026-05-18 12:04:54.768 ServerApp] ServerApp.token config is deprecated in 2.0. Use IdentityProvider.token.
+[I 2026-05-18 12:04:54.833 ServerApp] jupyter_lsp | extension was successfully linked.
+[I 2026-05-18 12:04:54.836 ServerApp] jupyter_server_terminals | extension was successfully linked.
+[I 2026-05-18 12:04:54.839 ServerApp] jupyterlab | extension was successfully linked.
+[I 2026-05-18 12:04:54.842 ServerApp] notebook | extension was successfully linked.
+[I 2026-05-18 12:04:55.121 ServerApp] notebook_shim | extension was successfully linked.
+[W 2026-05-18 12:04:55.140 ServerApp] All authentication is disabled.  Anyone who can connect to this server will be able to run code.
+[I 2026-05-18 12:04:55.141 ServerApp] notebook_shim | extension was successfully loaded.
+[I 2026-05-18 12:04:55.142 ServerApp] jupyter_lsp | extension was successfully loaded.
+[I 2026-05-18 12:04:55.143 ServerApp] jupyter_server_terminals | extension was successfully loaded.
+[I 2026-05-18 12:04:55.144 LabApp] JupyterLab extension loaded from /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jupyterlab
+[I 2026-05-18 12:04:55.145 LabApp] JupyterLab application directory is /home/runner/workspace/.pythonlibs/share/jupyter/lab
+[I 2026-05-18 12:04:55.145 LabApp] Extension Manager is 'pypi'.
+[I 2026-05-18 12:04:55.167 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2026-05-18 12:04:55.170 ServerApp] notebook | extension was successfully loaded.
+[I 2026-05-18 12:04:55.171 ServerApp] Serving notebooks from local directory: /home/runner/workspace
+[I 2026-05-18 12:04:55.171 ServerApp] Jupyter Server 2.18.2 is running at:
+[I 2026-05-18 12:04:55.171 ServerApp] http://127.0.0.1:5002/jupyter/tree
+[I 2026-05-18 12:04:55.171 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[I 2026-05-18 12:04:55.189 ServerApp] Skipped non-installed server(s): basedpyright, bash-language-server, dockerfile-language-server-nodejs, javascript-typescript-langserver, jedi-language-server, julia-language-server, pyrefly, pyright, python-language-server, python-lsp-server, r-languageserver, sql-language-server, texlab, typescript-language-server, unified-language-server, vscode-css-languageserver-bin, vscode-html-languageserver-bin, vscode-json-languageserver-bin, yaml-language-server
+nginx: [alert] could not open error log file: open() "/var/log/nginx/error.log" failed (2: No such file or directory)
+[I 2026-05-18 12:05:13.233 ServerApp] 302 GET /jupyter/ (@127.0.0.1) 0.61ms
+[W 2026-05-18 12:05:13.537 JupyterNotebookApp] Blocking request with non-local 'Host' 4b89dfab-5ccf-4e06-9526-2b774cc3b266-00-1amp5i20k9tdy.pike.replit.dev (4b89dfab-5ccf-4e06-9526-2b774cc3b266-00-1amp5i20k9tdy.pike.replit.dev). If the server should be accessible at that name, set ServerApp.allow_remote_access to disable the check.
+[E 2026-05-18 12:05:13.545 ServerApp] Uncaught exception in write_error
+    Traceback (most recent call last):
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/tornado/web.py", line 1859, in _execute
+        result = await result  # type: ignore
+                 ^^^^^^^^^^^^
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jupyter_server/base/handlers.py", line 605, in prepare
+        raise web.HTTPError(403)
+    tornado.web.HTTPError: HTTP 403: Forbidden
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jupyter_server/extension/handler.py", line 30, in get_template
+        template = cast("Template", self.settings[env].get_template(name))  # type:ignore[attr-defined]
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 1016, in get_template
+        return self._load_template(name, globals)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/environment.py", line 975, in _load_template
+        template = self.loader.load(self, name, self.make_globals(globals))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 126, in load
+        source, filename, uptodate = self.get_source(environment, name)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/jinja2/loaders.py", line 209, in get_source
+        raise TemplateNotFound(
+    jinja2.exceptions.TemplateNotFound: '403.html' not found in search path: '/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/notebook/templates'
+    

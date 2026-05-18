@@ -30,6 +30,7 @@ jupyter notebook \
   --ServerApp.token='' \
   --ServerApp.password='' \
   --ServerApp.allow_origin='*' \
+  --ServerApp.allow_remote_access=True \
   --ServerApp.base_url='/jupyter/' \
   --ServerApp.disable_check_xsrf=True &
 
