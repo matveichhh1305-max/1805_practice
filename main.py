@@ -160,7 +160,7 @@ def index():
     page_text = "\n".join(output)
 
     dev_domain = os.environ.get('REPLIT_DEV_DOMAIN', '')
-    jupyter_url = f"https://{dev_domain}:3000" if dev_domain else "http://localhost:3000"
+    jupyter_url = "/jupyter/"
 
     return f"""<!DOCTYPE html>
 <html lang="ru">
@@ -205,4 +205,4 @@ def index():
 </body>
 </html>"""
 
-serve(app, host="0.0.0.0", port=5000, url_scheme="https")
+serve(app, host="127.0.0.1", port=5001)
