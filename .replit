@@ -1,8 +1,8 @@
-run = "sh start.sh"
+run = "sh start.sh" 
 modules = ["python-3.11"]
 
 [env]
-PGDATA = "/home/runner/${REPL_SLUG}/data"
+PGDATA = "/home/runner/${REPL_SLUG}/data" 
 
 [[ports]]
 localPort = 5000
