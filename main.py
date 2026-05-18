@@ -25,7 +25,7 @@ def index():
         "rows": [[db_version]]
     })
 
-    # 2. Названия таблиц в базе данных
+    # 2. Названия всех таблиц во всех схемах
     cur.execute("""
         SELECT schemaname, tablename
         FROM pg_tables
@@ -38,66 +38,70 @@ def index():
         "rows": tables
     })
 
-    # 3. Названия столбцов 3 таблиц: students, courses, grades
-    for table in ["students", "courses", "grades"]:
+    # 3. Столбцы 3 таблиц из разных схем: pg_namespace, sql_features, students
+    chosen = [
+        ("pg_catalog",        "pg_namespace"),
+        ("information_schema","sql_features"),
+        ("public",            "students"),
+    ]
+    for schema, table in chosen:
         cur.execute("""
             SELECT column_name, data_type
             FROM information_schema.columns
-            WHERE table_schema = 'public' AND table_name = %s
+            WHERE table_schema = %s AND table_name = %s
             ORDER BY ordinal_position;
-        """, (table,))
-        cols = cur.fetchall()
+        """, (schema, table))
         sections.append({
-            "title": f"3. Столбцы таблицы «{table}»",
+            "title": f"3. Столбцы таблицы «{schema}.{table}»",
             "headers": ["column_name", "data_type"],
-            "rows": cols
+            "rows": cur.fetchall()
         })
 
-    # 4. Все записи 3 столбцов из выбранных таблиц
-    cur.execute("SELECT name, age, city FROM students;")
+    # 4. Все записи 3 выбранных столбцов из тех же таблиц
+    cur.execute("SELECT nspname, nspowner, nspacl FROM pg_catalog.pg_namespace;")
     sections.append({
-        "title": "4. Записи таблицы «students» (name, age, city)",
+        "title": "4. Записи «pg_catalog.pg_namespace» (nspname, nspowner, nspacl)",
+        "headers": ["nspname", "nspowner", "nspacl"],
+        "rows": cur.fetchall()
+    })
+
+    cur.execute("SELECT feature_id, feature_name, is_supported FROM information_schema.sql_features;")
+    sections.append({
+        "title": "4. Записи «information_schema.sql_features» (feature_id, feature_name, is_supported)",
+        "headers": ["feature_id", "feature_name", "is_supported"],
+        "rows": cur.fetchall()
+    })
+
+    cur.execute("SELECT name, age, city FROM public.students;")
+    sections.append({
+        "title": "4. Записи «public.students» (name, age, city)",
         "headers": ["name", "age", "city"],
-        "rows": cur.fetchall()
-    })
-
-    cur.execute("SELECT title, department, credits FROM courses;")
-    sections.append({
-        "title": "4. Записи таблицы «courses» (title, department, credits)",
-        "headers": ["title", "department", "credits"],
-        "rows": cur.fetchall()
-    })
-
-    cur.execute("SELECT student_id, course_id, grade FROM grades;")
-    sections.append({
-        "title": "4. Записи таблицы «grades» (student_id, course_id, grade)",
-        "headers": ["student_id", "course_id", "grade"],
         "rows": cur.fetchall()
     })
 
     # 5. Те же записи с устранением дубликатов (DISTINCT)
-    cur.execute("SELECT DISTINCT name, age, city FROM students;")
+    cur.execute("SELECT DISTINCT nspname, nspowner, nspacl FROM pg_catalog.pg_namespace;")
     sections.append({
-        "title": "5. Записи «students» (name, age, city) — без дубликатов",
+        "title": "5. Записи «pg_catalog.pg_namespace» — без дубликатов",
+        "headers": ["nspname", "nspowner", "nspacl"],
+        "rows": cur.fetchall()
+    })
+
+    cur.execute("SELECT DISTINCT feature_id, feature_name, is_supported FROM information_schema.sql_features;")
+    sections.append({
+        "title": "5. Записи «information_schema.sql_features» — без дубликатов",
+        "headers": ["feature_id", "feature_name", "is_supported"],
+        "rows": cur.fetchall()
+    })
+
+    cur.execute("SELECT DISTINCT name, age, city FROM public.students;")
+    sections.append({
+        "title": "5. Записи «public.students» — без дубликатов",
         "headers": ["name", "age", "city"],
         "rows": cur.fetchall()
     })
 
-    cur.execute("SELECT DISTINCT title, department, credits FROM courses;")
-    sections.append({
-        "title": "5. Записи «courses» (title, department, credits) — без дубликатов",
-        "headers": ["title", "department", "credits"],
-        "rows": cur.fetchall()
-    })
-
-    cur.execute("SELECT DISTINCT student_id, course_id, grade FROM grades;")
-    sections.append({
-        "title": "5. Записи «grades» (student_id, course_id, grade) — без дубликатов",
-        "headers": ["student_id", "course_id", "grade"],
-        "rows": cur.fetchall()
-    })
-
-    # 6. starelid, stanullfrac из pg_statistic где stanullfrac между 0.2 и 0.8
+    # 6. starelid, relname, stanullfrac из pg_statistic где stanullfrac от 0.2 до 0.8
     cur.execute("""
         SELECT s.starelid, c.relname, s.stanullfrac
         FROM pg_statistic s
@@ -106,8 +110,50 @@ def index():
         ORDER BY s.starelid;
     """)
     sections.append({
-        "title": "6. pg_statistic: starelid, relname и stanullfrac (от 0.2 до 0.8)",
+        "title": "6. pg_statistic: starelid, relname, stanullfrac (от 0.2 до 0.8)",
         "headers": ["starelid", "relname", "stanullfrac"],
+        "rows": cur.fetchall()
+    })
+
+    # 7. starelid, stanullfrac, stadistinct где stadistinct = 1.0 или 3.0
+    cur.execute("""
+        SELECT starelid, stanullfrac, stadistinct
+        FROM pg_statistic
+        WHERE stadistinct = 1.0 OR stadistinct = 3.0
+        ORDER BY starelid;
+    """)
+    sections.append({
+        "title": "7. pg_statistic: starelid, stanullfrac, stadistinct — где stadistinct = 1.0 или 3.0",
+        "headers": ["starelid", "stanullfrac", "stadistinct"],
+        "rows": cur.fetchall()
+    })
+
+    # 8. starelid, stanullfrac, stadistinct где stadistinct = 1.0, сортировка по starelid ASC
+    cur.execute("""
+        SELECT starelid, stanullfrac, stadistinct
+        FROM pg_statistic
+        WHERE stadistinct = 1.0
+        ORDER BY starelid ASC;
+    """)
+    sections.append({
+        "title": "8. pg_statistic: starelid, stanullfrac, stadistinct — где stadistinct = 1.0 (сортировка по starelid ↑)",
+        "headers": ["starelid", "stanullfrac", "stadistinct"],
+        "rows": cur.fetchall()
+    })
+
+    # 9. AVG(stawidth), MAX(stanullfrac), AVG(stadistinct), SUM(stadistinct) где starelid = 1247
+    cur.execute("""
+        SELECT
+            AVG(stawidth)    AS avg_stawidth,
+            MAX(stanullfrac) AS max_stanullfrac,
+            AVG(stadistinct) AS avg_stadistinct,
+            SUM(stadistinct) AS sum_stadistinct
+        FROM pg_statistic
+        WHERE starelid = 1247;
+    """)
+    sections.append({
+        "title": "9. pg_statistic (starelid = 1247): AVG(stawidth), MAX(stanullfrac), AVG(stadistinct), SUM(stadistinct)",
+        "headers": ["avg_stawidth", "max_stanullfrac", "avg_stadistinct", "sum_stadistinct"],
         "rows": cur.fetchall()
     })
 
