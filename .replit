@@ -1,4 +1,5 @@
 run = "sh start.sh"
+modules = ["nix", "python-3.12", "bash"]
 
 [env]
 PGDATA = "/home/runner/${REPL_SLUG}/data"
@@ -13,6 +14,7 @@ externalPort = 80
 
 [agent]
 expertMode = true
+stack = "BEST_EFFORT_FALLBACK"
 
 [workflows]
 runButton = "Project"
@@ -37,3 +39,6 @@ waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[nix]
+channel = "stable-25_05"
