@@ -5,6 +5,12 @@ from psycopg2 import sql
 from html import escape
 import os
 
+from sklearn.datasets import make_blobs
+import pandas as pd
+dataset, classes = make_blobs(n_samples=200, centers=4, n_features=2, cluster_std=0.5, random_state=0)
+df = pd.DataFrame(dataset, columns=['var1', 'var2'])
+print(df.head(2))
+
 app = Flask(__name__)
 
 def get_connection():
