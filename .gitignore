@@ -1,0 +1,5 @@
+data/
+postgresql.log
+logs/nginx.pid
+postgres/.s.PGSQL.5432.lock
+postgres/.s.PGSQL.5432
