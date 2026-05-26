@@ -1,4 +1,4 @@
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 # fig, ax = plt.subplots()
 # ax.plot([1, 2, 3, 4], [1, 4, 2, 5])
@@ -20,11 +20,24 @@ print(df.head(2))
 from yellowbrick.cluster import KElbowVisualizer
 from sklearn.cluster import KMeans
 model = KMeans()
-visualizer = KElbowVisualizer(model, k=(1, 12), force_model=True).fit(df)
-visualizer.show(outpath="elbow.png")
+# visualizer = KElbowVisualizer(model, k=(1, 12)).fit(df)
+# visualizer.show(outpath="elbow.png")
 
 kmeams = KMeans(n_clusters=4, init='k-means++', random_state=0).fit(df)
 print(kmeams.labels_)
 print(kmeams.cluster_centers_)
 print(kmeams.inertia_)
 print(kmeams.n_iter_)
+
+from collections  import Counter
+Counter(kmeams.labels_)
+print(Counter(kmeams.labels_))
+
+import seaborn as sns
+sns.scatterplot(data=df, x='var1', y='var2', hue=kmeams.labels_)
+plt.savefig('scatter.png')
+
+sns.scatterplot(data=df, x='var1', y='var2', hue=kmeams.labels_)
+plt.scatter(kmeams.cluster_centers_[:, 0], kmeams.cluster_centers_[:, 1], s=80, c='r', marker = "X", label='Centroids')
+plt.legend()
+plt.savefig('scatterX.png')
