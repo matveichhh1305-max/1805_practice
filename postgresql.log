@@ -38683,3 +38683,57 @@
 2026-05-25 12:00:58.474 GMT [1435] LOG:  checkpoint starting: end-of-recovery immediate wait
 2026-05-25 12:00:58.490 GMT [1435] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.005 s, total=0.019 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1947AF8, redo lsn=0/1947AF8
 2026-05-25 12:00:58.503 GMT [1434] LOG:  database system is ready to accept connections
+2026-05-25 12:11:53.381 GMT [2164] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-25 12:11:53.382 GMT [2164] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-25 12:11:53.387 GMT [2164] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-25 12:11:53.392 GMT [2167] LOG:  database system was interrupted; last known up at 2026-05-25 12:00:58 GMT
+2026-05-25 12:11:53.402 GMT [2167] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-25 12:11:53.413 GMT [2167] LOG:  redo starts at 0/1947B70
+2026-05-25 12:11:53.413 GMT [2167] LOG:  invalid record length at 0/1947BA8: expected at least 24, got 0
+2026-05-25 12:11:53.413 GMT [2167] LOG:  redo done at 0/1947B70 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-05-25 12:11:53.418 GMT [2165] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-25 12:11:53.433 GMT [2165] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.005 s, total=0.017 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1947BA8, redo lsn=0/1947BA8
+2026-05-25 12:11:53.439 GMT [2164] LOG:  database system is ready to accept connections
+2026-05-25 17:58:54.189 GMT [114] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-25 17:58:54.192 GMT [114] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-25 17:58:54.196 GMT [114] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-25 17:58:54.201 GMT [117] LOG:  database system was interrupted; last known up at 2026-05-25 12:11:53 GMT
+2026-05-25 17:58:54.211 GMT [117] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-25 17:58:54.224 GMT [117] LOG:  invalid record length at 0/1947C20: expected at least 24, got 0
+2026-05-25 17:58:54.224 GMT [117] LOG:  redo is not required
+2026-05-25 17:58:54.228 GMT [115] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-25 17:58:54.242 GMT [115] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.004 s, total=0.017 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1947C20, redo lsn=0/1947C20
+2026-05-25 17:58:54.246 GMT [114] LOG:  database system is ready to accept connections
+2026-05-26 19:55:54.374 GMT [121] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-26 19:55:54.377 GMT [121] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-26 19:55:54.381 GMT [121] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-26 19:55:54.387 GMT [127] LOG:  database system was interrupted; last known up at 2026-05-25 17:58:54 GMT
+2026-05-26 19:55:54.396 GMT [127] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-26 19:55:54.413 GMT [127] LOG:  redo starts at 0/1947C98
+2026-05-26 19:55:54.413 GMT [127] LOG:  invalid record length at 0/1947CD0: expected at least 24, got 0
+2026-05-26 19:55:54.413 GMT [127] LOG:  redo done at 0/1947C98 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-05-26 19:55:54.417 GMT [125] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-26 19:55:54.432 GMT [125] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.004 s, total=0.018 s; sync files=2, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=0 kB; lsn=0/1947CD0, redo lsn=0/1947CD0
+2026-05-26 19:55:54.438 GMT [121] LOG:  database system is ready to accept connections
+2026-05-26 19:58:45.556 GMT [391] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-26 19:58:45.556 GMT [391] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-26 19:58:45.559 GMT [391] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-26 19:58:45.564 GMT [394] LOG:  database system was interrupted; last known up at 2026-05-26 19:55:54 GMT
+2026-05-26 19:58:45.572 GMT [394] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-26 19:58:45.584 GMT [394] LOG:  redo starts at 0/1947D48
+2026-05-26 19:58:45.584 GMT [394] LOG:  invalid record length at 0/1947D80: expected at least 24, got 0
+2026-05-26 19:58:45.584 GMT [394] LOG:  redo done at 0/1947D48 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-05-26 19:58:45.587 GMT [392] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-26 19:58:45.603 GMT [392] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.005 s, total=0.018 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1947D80, redo lsn=0/1947D80
+2026-05-26 19:58:45.607 GMT [391] LOG:  database system is ready to accept connections
+2026-05-26 20:01:20.671 GMT [795] LOG:  starting PostgreSQL 17.5 on x86_64-pc-linux-gnu, compiled by clang version 19.1.7, 64-bit
+2026-05-26 20:01:20.672 GMT [795] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-05-26 20:01:20.676 GMT [795] LOG:  listening on Unix socket "/home/runner/workspace/postgres/.s.PGSQL.5432"
+2026-05-26 20:01:20.681 GMT [798] LOG:  database system was interrupted; last known up at 2026-05-26 19:58:45 GMT
+2026-05-26 20:01:20.689 GMT [798] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-05-26 20:01:20.701 GMT [798] LOG:  redo starts at 0/1947DF8
+2026-05-26 20:01:20.701 GMT [798] LOG:  invalid record length at 0/1947E30: expected at least 24, got 0
+2026-05-26 20:01:20.701 GMT [798] LOG:  redo done at 0/1947DF8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-05-26 20:01:20.705 GMT [796] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-05-26 20:01:20.723 GMT [796] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.005 s, total=0.020 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1947E30, redo lsn=0/1947E30
+2026-05-26 20:01:20.729 GMT [795] LOG:  database system is ready to accept connections
