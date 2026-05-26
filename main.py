@@ -1,43 +1,408 @@
-import matplotlib.pyplot as plt
+# ==============================
+# Блок подключения библиотек
+# ==============================
 
-# fig, ax = plt.subplots()
-# ax.plot([1, 2, 3, 4], [1, 4, 2, 5])
-# plt.ylabel('some numbers')
-# plt.savefig('plot.png')
+from flask import Flask, send_from_directory
+# Flask используется для создания веб-микросервиса
+# send_from_directory нужен для вывода сохраненных изображений в браузере
+
+from waitress import serve
+# serve используется для запуска Flask-приложения через сервер Waitress
+
+import numpy as np
+# numpy используется для работы с массивами и преобразования данных
+
+import pandas as pd
+# pandas используется для создания таблицы DataFrame
+
+import matplotlib.pyplot as plt
+# matplotlib используется для построения и сохранения графиков
 
 from sklearn.datasets import make_blobs
-import pandas as pd
-dataset, classes = make_blobs(
+# make_blobs используется для генерации искусственного набора данных
+
+from sklearn.cluster import KMeans
+# KMeans используется для кластеризации методом K-средних
+
+from sklearn.preprocessing import MinMaxScaler
+# MinMaxScaler используется для масштабирования данных в нужные диапазоны
+
+from collections import Counter
+# Counter используется для подсчета количества элементов в каждом кластере
+
+import os
+# os используется для работы с текущей папкой проекта
+
+
+# ==============================
+# Блок создания Flask-приложения
+# ==============================
+
+app = Flask(__name__)
+# Создается объект Flask-приложения
+
+
+# ==============================
+# Блок генерации исходных данных
+# ==============================
+
+dataset, true_classes = make_blobs(
     n_samples=200,
     centers=4,
     n_features=2,
-    cluster_std=0.5,
-    random_state=0)
+    cluster_std=0.6,
+    random_state=0
+)
+# Генерируется набор данных из 200 записей
+# centers=4 означает, что точки формируются вокруг четырех центров
+# n_features=2 означает, что сначала создаются два числовых признака
+# cluster_std=0.6 задает разброс точек внутри кластеров
+# random_state=0 фиксирует случайность для повторяемости результата
 
-df = pd.DataFrame(dataset, columns=['var1', 'var2'])
-print(df.head(2))
 
-from yellowbrick.cluster import KElbowVisualizer
-from sklearn.cluster import KMeans
-model = KMeans()
-visualizer = KElbowVisualizer(model, k=(1, 12), force_model=True).fit(df)
-visualizer.show(outpath="elbowobz.png")
+# ==============================
+# Блок масштабирования параметров под вариант
+# ==============================
 
-kmeams = KMeans(n_clusters=4, init='k-means++', random_state=0).fit(df)
-print(kmeams.labels_)
-print(kmeams.cluster_centers_)
-print(kmeams.inertia_)
-print(kmeams.n_iter_)
+scaler_first = MinMaxScaler(feature_range=(0, 1))
+# Создается масштабатор для первого параметра
+# Первый параметр должен находиться в диапазоне [0; 1]
 
-# from collections  import Counter
-# Counter(kmeams.labels_)
-# print(Counter(kmeams.labels_))
+scaler_second = MinMaxScaler(feature_range=(-2, 2))
+# Создается масштабатор для второго параметра
+# Второй параметр должен находиться в диапазоне [-2; 2]
 
-# import seaborn as sns
-# sns.scatterplot(data=df, x='var1', y='var2', hue=kmeams.labels_)
-# plt.savefig('scatter.png')
+first_param = scaler_first.fit_transform(dataset[:, 0].reshape(-1, 1)).ravel()
+# Первый признак масштабируется в диапазон [0; 1]
 
-# sns.scatterplot(data=df, x='var1', y='var2', hue=kmeams.labels_)
-# plt.scatter(kmeams.cluster_centers_[:, 0], kmeams.cluster_centers_[:, 1], s=80, c='r', marker = "X", label='Centroids')
-# plt.legend()
-# plt.savefig('scatterX.png')
+second_param = scaler_second.fit_transform(dataset[:, 1].reshape(-1, 1)).ravel()
+# Второй признак масштабируется в диапазон [-2; 2]
+
+
+# ==============================
+# Блок формирования третьего параметра
+# ==============================
+
+third_param_text = np.where(true_classes % 2 == 0, "да", "нет")
+# Создается третий параметр со значениями "да" и "нет"
+# Если номер исходного класса четный, записывается "да"
+# Если номер исходного класса нечетный, записывается "нет"
+
+third_param_code = np.where(third_param_text == "да", 1, 0)
+# Для KMeans текстовый параметр переводится в числовой вид
+# "да" заменяется на 1
+# "нет" заменяется на 0
+
+
+# ==============================
+# Блок формирования массива M
+# ==============================
+
+df = pd.DataFrame({
+    "param1": first_param,
+    "param2": second_param,
+    "param3_text": third_param_text,
+    "param3_code": third_param_code
+})
+# Создается таблица DataFrame
+# param1 — первый параметр в диапазоне [0; 1]
+# param2 — второй параметр в диапазоне [-2; 2]
+# param3_text — третий параметр в текстовом виде: "да" или "нет"
+# param3_code — третий параметр в числовом виде: 1 или 0
+
+features = df[["param1", "param2", "param3_code"]]
+# Для кластеризации выбираются три числовых параметра
+# Именно они образуют массив M для алгоритма KMeans
+
+
+# ==============================
+# Блок вывода исходных данных в консоль
+# ==============================
+
+print("Исходный массив M:")
+print(df.head(20))
+# Выводятся первые 20 строк массива M
+
+print("\nРазмер массива M:")
+print(df.shape)
+# Выводится размер массива M
+
+
+# ==============================
+# Блок поиска оптимального количества кластеров методом локтя
+# ==============================
+
+inertia_values = []
+# Создается список для хранения значений внутрикластерной суммы квадратов
+
+for k in range(1, 11):
+    # Запускается цикл для количества кластеров от 1 до 10
+
+    elbow_model = KMeans(
+        n_clusters=k,
+        init="k-means++",
+        random_state=0
+    )
+    # Создается модель KMeans для текущего количества кластеров
+
+    elbow_model.fit(features)
+    # Модель обучается на массиве M
+
+    inertia_values.append(elbow_model.inertia_)
+    # Значение внутрикластерной суммы квадратов добавляется в список
+
+plt.figure(figsize=(8, 5))
+# Создается область для построения графика метода локтя
+
+plt.plot(range(1, 11), inertia_values, marker="o")
+# Строится график зависимости inertia от количества кластеров
+
+plt.xlabel("Количество кластеров")
+# Подписывается ось X
+
+plt.ylabel("Внутрикластерная сумма квадратов")
+# Подписывается ось Y
+
+plt.title("Метод локтя для выбора количества кластеров")
+# Добавляется название графика
+
+plt.grid(True)
+# Включается сетка на графике
+
+plt.savefig("elbow.png")
+# График метода локтя сохраняется в файл elbow.png
+
+plt.close()
+# Закрывается текущая фигура
+
+
+# ==============================
+# Блок кластеризации методом KMeans
+# ==============================
+
+kmeans = KMeans(
+    n_clusters=4,
+    init="k-means++",
+    random_state=0
+)
+# Создается модель KMeans
+# n_clusters=4 означает, что данные делятся на четыре кластера
+# init="k-means++" улучшает выбор начальных центроидов
+# random_state=0 фиксирует случайность результата
+
+kmeans.fit(features)
+# Модель обучается на трех параметрах массива M
+
+df["cluster"] = kmeans.labels_
+# В таблицу добавляется столбец с предсказанными номерами кластеров
+
+
+# ==============================
+# Блок вывода результатов кластеризации в консоль
+# ==============================
+
+print("\nПредсказанные кластеры для каждой записи:")
+print(kmeans.labels_)
+# Выводятся номера кластеров для каждой записи массива M
+
+print("\nКоординаты центроидов:")
+print(kmeans.cluster_centers_)
+# Выводятся координаты центроидов
+# Так как параметров три, каждый центроид имеет три координаты
+
+print("\nВнутрикластерная сумма квадратов:")
+print(kmeans.inertia_)
+# Выводится значение внутрикластерной суммы квадратов
+
+print("\nКоличество итераций:")
+print(kmeans.n_iter_)
+# Выводится количество итераций, которое потребовалось алгоритму
+
+print("\nРазмер каждого кластера:")
+print(Counter(kmeans.labels_))
+# Выводится количество записей в каждом кластере
+
+
+# ==============================
+# Блок 3D-визуализации кластеров
+# ==============================
+
+fig = plt.figure(figsize=(9, 7))
+# Создается фигура для трехмерного графика
+
+ax = fig.add_subplot(111, projection="3d")
+# Добавляется трехмерная область построения
+
+scatter = ax.scatter(
+    df["param1"],
+    df["param2"],
+    df["param3_code"],
+    c=df["cluster"],
+    cmap="viridis",
+    s=50
+)
+# Строится 3D-диаграмма рассеяния
+# Ось X — первый параметр
+# Ось Y — второй параметр
+# Ось Z — третий параметр, где нет = 0, да = 1
+# Цвет точки зависит от номера кластера
+
+ax.set_xlabel("Параметр 1 [0; 1]")
+# Подписывается ось X
+
+ax.set_ylabel("Параметр 2 [-2; 2]")
+# Подписывается ось Y
+
+ax.set_zlabel("Параметр 3: нет=0, да=1")
+# Подписывается ось Z
+
+ax.set_title("3D-визуализация кластеров KMeans")
+# Добавляется название графика
+
+plt.colorbar(scatter, ax=ax, label="Кластер")
+# Добавляется цветовая шкала
+
+plt.savefig("scatter_3d_individual.png")
+# Сохраняется 3D-график кластеров
+
+plt.close()
+# Закрывается текущая фигура
+
+
+# ==============================
+# Блок 3D-визуализации кластеров с центроидами
+# ==============================
+
+fig = plt.figure(figsize=(9, 7))
+# Создается фигура для трехмерного графика
+
+ax = fig.add_subplot(111, projection="3d")
+# Добавляется трехмерная область построения
+
+scatter = ax.scatter(
+    df["param1"],
+    df["param2"],
+    df["param3_code"],
+    c=df["cluster"],
+    cmap="viridis",
+    s=50
+)
+# Строятся точки массива M в трехмерном пространстве
+
+ax.scatter(
+    kmeans.cluster_centers_[:, 0],
+    kmeans.cluster_centers_[:, 1],
+    kmeans.cluster_centers_[:, 2],
+    s=160,
+    c="red",
+    marker="X",
+    label="Centroids"
+)
+# На график добавляются центроиды кластеров
+# У каждого центроида три координаты: param1, param2, param3_code
+
+ax.set_xlabel("Параметр 1 [0; 1]")
+# Подписывается ось X
+
+ax.set_ylabel("Параметр 2 [-2; 2]")
+# Подписывается ось Y
+
+ax.set_zlabel("Параметр 3: нет=0, да=1")
+# Подписывается ось Z
+
+ax.set_title("3D-кластеры KMeans с центроидами")
+# Добавляется название графика
+
+ax.legend()
+# Добавляется легенда
+
+plt.colorbar(scatter, ax=ax, label="Кластер")
+# Добавляется цветовая шкала
+
+plt.savefig("scatter_3d_centroids_individual.png")
+# Сохраняется график с центроидами
+
+plt.close()
+# Закрывается текущая фигура
+
+
+# ==============================
+# Блок маршрутов веб-микросервиса
+# ==============================
+
+@app.route("/")
+def index():
+    # Формируется главная HTML-страница микросервиса
+
+    return f"""
+    <html>
+        <head>
+            <title>Индивидуальная часть ЛР6</title>
+        </head>
+
+        <body>
+            <h1>Индивидуальная часть ЛР6</h1>
+
+            <h2>Кластеризация данных методом KMeans</h2>
+
+            <p>
+                Вариант: у записей 3 параметра.
+                Первый параметр изменяется в диапазоне [0; 1],
+                второй параметр изменяется в диапазоне [-2; 2],
+                третий параметр принимает значения "да" или "нет".
+            </p>
+
+            <p>
+                Для применения KMeans третий параметр был преобразован:
+                "нет" = 0, "да" = 1.
+                Поэтому каждая запись отображается в трехмерном пространстве.
+            </p>
+
+            <h2>Первые 20 строк массива M</h2>
+            {df.head(20).to_html(index=False)}
+
+            <h2>Размер массива M</h2>
+            <p>{df.shape}</p>
+
+            <h2>Размер каждого кластера</h2>
+            <p>{dict(Counter(kmeans.labels_))}</p>
+
+            <h2>Координаты центроидов</h2>
+            {pd.DataFrame(
+                kmeans.cluster_centers_,
+                columns=["param1", "param2", "param3_code"]
+            ).to_html(index=False)}
+
+            <h2>Внутрикластерная сумма квадратов</h2>
+            <p>{kmeans.inertia_}</p>
+
+            <h2>Количество итераций</h2>
+            <p>{kmeans.n_iter_}</p>
+
+            <h2>Метод локтя</h2>
+            <img src="/image/elbow.png" width="700">
+
+            <h2>3D-диаграмма рассеяния кластеров</h2>
+            <img src="/image/scatter_3d_individual.png" width="700">
+
+            <h2>3D-диаграмма кластеров с центроидами</h2>
+            <img src="/image/scatter_3d_centroids_individual.png" width="700">
+        </body>
+    </html>
+    """
+
+
+@app.route("/image/<filename>")
+def image(filename):
+    # Маршрут используется для отображения изображений на HTML-странице
+    return send_from_directory(os.getcwd(), filename)
+
+
+# ==============================
+# Блок запуска микросервиса
+# ==============================
+
+serve(app, host="0.0.0.0", port=5000)
+# Запускается Flask-приложение через Waitress
+# host="0.0.0.0" делает микросервис доступным в Replit
+# port=5000 задает порт запуска
